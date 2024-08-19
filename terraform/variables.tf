@@ -14,6 +14,7 @@ variable "db_username" {
 variable "db_password" {
   description = "The master password for the RDS instance"
   type        = string
+  default     = "Q5f7D8!r4d"
   sensitive   = true  # Indique que cette variable est sensible
 }
 

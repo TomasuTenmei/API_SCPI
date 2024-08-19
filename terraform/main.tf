@@ -48,7 +48,7 @@ resource "aws_db_subnet_group" "default" {
 
 # Crée l'instance RDS MySQL
 resource "aws_db_instance" "my_mysql_instance" {
-  allocated_storage    = 20
+  allocated_storage    = 20 # 20 Go de stockage (maximum pour le niveau gratuit)
   storage_type         = "gp2"
   engine               = "mysql"
   engine_version       = "8.0"
