@@ -32,3 +32,9 @@ L'API est développé sous Python 3.11 avec FastAPI.
 - [ ] S3
 - [ ] RDS ou DynamoDB
 - [ ] SNS / SQS
+
+# Commandes pour configurer les variables environnement pour AWS CLI
+
+    export AWS_ACCESS_KEY_ID=AKIA3FLD23NVHK4GTS75
+    export AWS_SECRET_ACCESS_KEY=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
+    export AWS_DEFAULT_REGION=eu-west-3

@@ -1,11 +1,24 @@
+# variables.tf
 variable "aws_region" {
-  description = "La région AWS où les ressources seront déployées"
+  description = "The AWS region to deploy resources in"
   type        = string
-  default     = "eu-west-3" # Paris
+  default     = "eu-west-3"  # Paris
 }
 
-variable "environment" {
-  description = "Environnement de déploiement (dev, staging, prod)"
+variable "db_username" {
+  description = "The master username for the RDS instance"
   type        = string
-  default     = "dev"
+  default     = "admin"
+}
+
+variable "db_password" {
+  description = "The master password for the RDS instance"
+  type        = string
+  sensitive   = true  # Indique que cette variable est sensible
+}
+
+variable "db_instance_class" {
+  description = "The instance type for the RDS instance"
+  type        = string
+  default     = "db.t3.micro"  # Instance éligible au niveau gratuit
 }
