@@ -1,56 +1,57 @@
-# Créer un rôle IAM pour la fonction Lambda
-resource "aws_iam_role" "lambda_role" {
-  name = "lambda_rds_access_role"
+resource "aws_lambda_function" "execute_scpi" {
+  function_name = "executeSCPI"
+  role          = aws_iam_role.lambda_exec.arn
+  handler       = "execute_scpi.handler"
+  runtime       = "python3.8"
 
-  assume_role_policy = jsonencode({
-    Version = "2012-10-17",
-    Statement = [
-      {
-        Action = "sts:AssumeRole",
-        Effect = "Allow",
-        Sid    = "",
-        Principal = {
-          Service = "lambda.amazonaws.com",
-        },
-      },
-    ],
-  })
-
-  inline_policy {
-    name = "rds-access-policy"
-    policy = jsonencode({
-      Version = "2012-10-17",
-      Statement = [
-        {
-          Effect = "Allow",
-          Action = [
-            "rds:*",
-            "logs:*",
-            "cloudwatch:*",
-          ],
-          Resource = "*",
-        },
-      ],
-    })
-  }
-}
-
-# Créer la fonction Lambda
-resource "aws_lambda_function" "insert_data_lambda" {
-  filename         = "${path.module}/lambda/add_data_to_db.zip"
-  function_name    = "insert_data_lambda"
-  role             = aws_iam_role.lambda_role.arn
-  handler          = "add_data_to_db.lambda_handler"
-  runtime          = "python3.9"
+  source_code_hash = filebase64sha256("lambda/execute_scpi.zip")
+  filename         = "lambda/execute_scpi.zip"
 
   environment {
     variables = {
-      RDS_HOST     = aws_db_instance.my_mysql_instance.endpoint
-      RDS_USER     = var.db_username
-      RDS_PASSWORD = var.db_password
-      RDS_DB       = "mydatabase"
+      DYNAMODB_TABLE = aws_dynamodb_table.scpi_commands.name
     }
   }
+}
 
-  source_code_hash = filebase64sha256("${path.module}/lambda/add_data_to_db.zip")
+resource "aws_lambda_function" "add_scpi_command" {
+  function_name = "addSCPICommand"
+  role          = aws_iam_role.lambda_exec.arn
+  handler       = "add_scpi_command.handler"
+  runtime       = "python3.8"
+
+  source_code_hash = filebase64sha256("lambda/add_scpi_command.zip")
+  filename         = "lambda/add_scpi_command.zip"
+
+  environment {
+    variables = {
+      DYNAMODB_TABLE = aws_dynamodb_table.scpi_commands.name
+    }
+  }
+}
+
+resource "aws_lambda_function" "get_oscilloscopes" {
+  function_name = "getOscilloscopes"
+  role          = aws_iam_role.lambda_exec.arn
+  handler       = "get_oscilloscopes.handler"
+  runtime       = "python3.8"
+
+  source_code_hash = filebase64sha256("lambda/get_oscilloscopes.zip")
+  filename         = "lambda/get_oscilloscopes.zip"
+}
+
+resource "aws_lambda_function" "add_oscilloscope" {
+  function_name = "addOscilloscope"
+  role          = aws_iam_role.lambda_exec.arn
+  handler       = "add_oscilloscope.handler"
+  runtime       = "python3.8"
+
+  source_code_hash = filebase64sha256("lambda/add_oscilloscope.zip")
+  filename         = "lambda/add_oscilloscope.zip"
+
+  environment {
+    variables = {
+      DYNAMODB_TABLE = aws_dynamodb_table.oscilloscopes.name
+    }
+  }
 }
