@@ -52,11 +52,11 @@ L'API est développé sous Python 3.11 avec FastAPI.
 
 ## TODO
 
-- [ ] API
-- [ ] Lambda
+- [x] API
+- [x] Lambda
 - [ ] Cognito
 - [ ] S3
-- [ ] RDS ou DynamoDB
+- [x] RDS ou DynamoDB
 - [ ] SNS / SQS
 
 # Liste des Commandes

@@ -61,5 +61,5 @@ resource "aws_lambda_permission" "api_gateway_invoke" {
   action        = "lambda:InvokeFunction"
   function_name = "addOscilloscope"
   principal     = "apigateway.amazonaws.com"
-  source_arn    = "arn:aws:execute-api:eu-west-3:767397911402:de8g6wc975/test-invoke-stage/POST/oscilloscopes"
+  source_arn    = "${aws_api_gateway_rest_api.scpi_api.execution_arn}/*/*"
 }
