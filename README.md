@@ -55,9 +55,11 @@ L'API est développé sous Python 3.11 avec FastAPI.
 - [x] API
 - [x] Lambda
 - [ ] Cognito
-- [ ] S3
-- [x] RDS ou DynamoDB
+- [x] S3 (site web static)
+- [x] ~~RDS~~ ou DynamoDB
 - [ ] SNS / SQS
+
+- [ ] Site web + API
 
 # Liste des Commandes
 
@@ -66,3 +68,4 @@ L'API est développé sous Python 3.11 avec FastAPI.
     export AWS_DEFAULT_REGION=eu-west-3
 
     mariadb -h your-db-endpoint -P 3306 -u admin -p
+    npm run build
