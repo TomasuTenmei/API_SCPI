@@ -55,3 +55,11 @@ resource "aws_lambda_function" "add_oscilloscope" {
     }
   }
 }
+
+resource "aws_lambda_permission" "api_gateway_invoke" {
+  statement_id  = "apigateway-test-invoke-permissions"
+  action        = "lambda:InvokeFunction"
+  function_name = "addOscilloscope"
+  principal     = "apigateway.amazonaws.com"
+  source_arn    = "arn:aws:execute-api:eu-west-3:767397911402:de8g6wc975/test-invoke-stage/POST/oscilloscopes"
+}
