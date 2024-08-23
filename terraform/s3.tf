@@ -11,6 +11,11 @@ resource "aws_s3_bucket" "react_app_bucket" {
     index_document = "index.html"
     error_document = "error.html"
   }
+
+    depends_on = [
+    aws_cognito_user_pool.main,    # Dépendance sur le User Pool
+    aws_cognito_user_pool_client.main  # Dépendance sur le Client Pool
+  ]
 }
 
 resource "aws_s3_bucket_public_access_block" "react_app_public_access_block" {
@@ -51,6 +56,10 @@ resource "null_resource" "frontend_build" {
   provisioner "local-exec" {
     command = "cd ../frontend && REACT_APP_API_URL=${aws_api_gateway_deployment.scpi_api_deployment.invoke_url} npm run build"
   }
+  depends_on = [
+    aws_cognito_user_pool.main,    # Dépendance sur le User Pool
+    aws_cognito_user_pool_client.main  # Dépendance sur le Client Pool
+  ]
 }
 
 
