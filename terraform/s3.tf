@@ -22,13 +22,6 @@ resource "aws_s3_bucket_public_access_block" "react_app_public_access_block" {
   restrict_public_buckets = false
 }
 
-# Crée une politique de bucket pour rendre les objets publics
-resource "aws_s3_bucket_policy" "react_app_bucket_policy" {
-  bucket = aws_s3_bucket.react_app_bucket.id
-
-  policy = data.aws_iam_policy_document.bucket_policy.json
-}
-
 # Utilise un document IAM pour définir la politique du bucket
 data "aws_iam_policy_document" "bucket_policy" {
   statement {
@@ -54,6 +47,13 @@ locals {
   }
 }
 
+resource "null_resource" "frontend_build" {
+  provisioner "local-exec" {
+    command = "cd ../frontend && REACT_APP_API_URL=${aws_api_gateway_deployment.scpi_api_deployment.invoke_url} npm run build"
+  }
+}
+
+
 resource "aws_s3_bucket_object" "react_app_files" {
   for_each = fileset("${path.module}/../frontend/build", "**")
 
@@ -62,6 +62,7 @@ resource "aws_s3_bucket_object" "react_app_files" {
   source = "${path.module}/../frontend/build/${each.value}"
 
   content_type = lookup(local.mime_types, lower(element(split(".", each.value), length(split(".", each.value)) - 1)), "application/octet-stream")
+  depends_on = [null_resource.frontend_build] # Assure que le build est complété avant le déploiement
 }
 
 resource "aws_s3_bucket_website_configuration" "react_app_website" {
@@ -74,4 +75,11 @@ resource "aws_s3_bucket_website_configuration" "react_app_website" {
   error_document {
     key = "index.html" # Vous pouvez définir une page d'erreur spécifique ou rediriger vers l'index
   }
+}
+
+# Crée une politique de bucket pour rendre les objets publics
+resource "aws_s3_bucket_policy" "react_app_bucket_policy" {
+  bucket = aws_s3_bucket.react_app_bucket.id
+
+  policy = data.aws_iam_policy_document.bucket_policy.json
 }

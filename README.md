@@ -59,7 +59,7 @@ L'API est développé sous Python 3.11 avec FastAPI.
 - [x] ~~RDS~~ ou DynamoDB
 - [ ] SNS / SQS
 
-- [ ] Site web + API
+- [x] Site web + API
 
 # Liste des Commandes
 
