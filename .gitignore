@@ -156,3 +156,4 @@ cython_debug/
 *.tfstate.*
 .terraform/
 terraform/.terraform.lock.hcl
+*.tfvars
