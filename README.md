@@ -32,12 +32,3 @@ API qui permet la recherche des commandes SCPI (Standard Commands for Programmab
 - [ ] SNS / SQS
 
 - [x] Site web + API
-
-# Liste des Commandes
-
-    export AWS_ACCESS_KEY_ID=AKIA3FLD23NVHK4GTS75
-    export AWS_SECRET_ACCESS_KEY=9F1j9c7zSVIFxoTJHat4kH/gReu8VeHMY4sDv9g3
-    export AWS_DEFAULT_REGION=eu-west-3
-
-    mariadb -h your-db-endpoint -P 3306 -u admin -p
-    npm run build
